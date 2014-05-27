@@ -1,2 +1,4 @@
-web_ABOUT
+WEB_ABOUT
 =========
+* _Flask_
+* _Python_
