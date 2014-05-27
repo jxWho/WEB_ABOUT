@@ -1,0 +1,23 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="container col-md-7 col-md-offset-2">
+        <form action="{{ url_for('note',id =  g.user.id) }}" method="POST">
+          {{form.hidden_tag()}}
+          {{ wtf.form_errors(form, hiddens="only") }}
+          {{wtf.form_field(form.body)}}
+          {{wtf.form_field(form.submit_button)}}
+        </form>
+      </div>
+    </div>
+
+    <br>
+    <div class="row">
+      <div class="container col-md-7 col-md-offset-2">
+        <p>Post Test</p>
+      </div>
+  </div>
+  </div>
+{% endblock %}

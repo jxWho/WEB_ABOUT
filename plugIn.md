@@ -1,0 +1,12 @@
+* flask
+* flask-login
+* flask-openid
+* sqlalchemy
+* flask-sqlalchemy
+* sqlalchemy-migrate
+* flask-whooshalchemy
+* flask-wtf
+* pytz
+* flask-babel
+* flup
+* flask-bootstrap

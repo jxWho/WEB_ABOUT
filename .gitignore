@@ -1,0 +1,10 @@
+#mac
+.DS_Store
+
+#vim
+*.swp
+
+#Python
+*.pyc
+
+
