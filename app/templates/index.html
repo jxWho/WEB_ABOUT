@@ -2,22 +2,29 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="container">
-    <div class="row">
       <div class="container col-md-7 col-md-offset-2">
-        <form action="{{ url_for('note',id =  g.user.id) }}" method="POST">
-          {{form.hidden_tag()}}
-          {{ wtf.form_errors(form, hiddens="only") }}
+        <!-- here is for CSRF of AJAX -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <!-- Post Place -->
+        <form action="" role="form" class="form form-horiziontal noteClass">
+          {{ form.hidden_tag() }}
+          {{ form.csrf_token }}
           {{wtf.form_field(form.body)}}
-          {{wtf.form_field(form.submit_button)}}
+          <span class="hidden">{{g.user.id}}</span>
+          <button id="noteButton"type="button"
+            class="btn btn-default pull-right">Post</button>
         </form>
       </div>
-    </div>
 
     <br>
-    <div class="row">
-      <div class="container col-md-7 col-md-offset-2">
-        <p>Post Test</p>
+    <!-- List all posts here -->
+      <div class="container col-md-7 col-md-offset-2" id="postContainer">
+        {% for post in posts %}
+        <div class="row col-md-offset-0">
+          <p>{{post.body}}</p>
+          <p class="pull-right">{{post.timestamp}}</p>
+        </div>
+        {% endfor %}
       </div>
-  </div>
   </div>
 {% endblock %}

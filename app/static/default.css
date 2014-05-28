@@ -3,5 +3,13 @@ body{
 }
 
 .noteClass textArea{
-  height:150%;
+  height:150px;
+  font-size: 15px ;
+}
+
+#postContainer .row{
+  border-bottom: 1px solid gray;
+  padding-bottom: 5px;
+  padding-top: 3px;
+  margin-top: 5px;
 }

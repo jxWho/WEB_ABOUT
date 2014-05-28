@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, SubmitField, PasswordField \
-                    ,TextAreaField
+                    ,TextAreaField, HiddenField
 import wtforms
 from wtforms.validators import Required, Length, EqualTo
 
@@ -35,7 +35,7 @@ class RegisterForm(Form):
 
 class PostForm(Form):
     body = TextAreaField('Content',
-            validators=[Required(), Length(min=2, max=140)]
+             validators=[Length(min=1, max=140)]
             )
 
-    submit_button = SubmitField('Post')
+    #submit_button = SubmitField('Post')

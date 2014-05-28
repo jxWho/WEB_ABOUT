@@ -1,5 +1,5 @@
 import flask
-import time
+import time, datetime
 from app import app
 from forms import LoginForm, RegisterForm, PostForm
 from flask.ext.login import login_user, logout_user,current_user,login_required
@@ -26,10 +26,12 @@ def internal_error(error):
 def index():
     user = flask.g.user
     form = PostForm()
+    posts = Post.query.order_by(Post.timestamp.desc())
     return flask.render_template("index.html",
             title="Home",
             user=user,
-            form = form)
+            form = form,
+            posts = posts)
 
 @app.route('/logIn', methods=['GET', 'POST'])
 def login():
@@ -93,18 +95,32 @@ def logout():
     logout_user()
     return flask.redirect( flask.url_for('index') )
 
-@app.route('/note/<int:id>', methods=['POST'])
-def note(id):
-    form = PostForm()
-    if form.validate_on_submit():
-        print id
-        content = form.body.data
-        currentTime = time.strftime('%Y-%m-%d', time.localtime(time.time()) )
-        user_id = id
-        pass
+@app.route('/note')
+def note():
+    content = flask.request.args.get('content')
+    currentTime = time.strftime('%Y-%m-%d-%H-%M-%S',
+            time.localtime(time.time()) )
+    currentDateTime = datetime.datetime.strptime(currentTime,
+            "%Y-%m-%d-%H-%M-%S")
+    user_id = flask.request.args.get('uid')
+    newPost = Post( body = content,
+            timestamp = currentDateTime,
+            user_id = user_id)
 
-    return flask.redirect( flask.request.args.get('next') or
-            flask.url_for('index') )
+    flag = True
+    try:
+        db.session.add(newPost)
+        db.session.commit()
+    except Exception as e:
+        flag = False
+        db.session.rollback()
+        print e
+        raise e
+
+    if flag:
+        return flask.jsonify(success=1)
+    else:
+        return flask.jsonify(success=0)
 
 #Used by Flask-Login
 @lm.user_loader
