@@ -20,8 +20,27 @@
     <!-- List all posts here -->
       <div class="container col-md-7 col-md-offset-2" id="postContainer">
         {% for post in posts %}
-        <div class="row col-md-offset-0">
-          <p>{{post.body}}</p>
+        <div class="container col-md-12 col-md-offset-0">
+
+          <div class="dropdown pull-right">
+            <button class="btn btn-xs dropdown-toggle " type="button"
+              id="dropdownMenu1" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu"
+              aria-labelleby="dropdownMenu1">
+
+              <li role="presentation">
+                <a href="#" role="menuitem">
+                  Delete
+                </a>
+            </li>
+
+            </ul>
+
+          </div>
+
+          <p class="clearfix">{{post.body}}</p>
           <p class="pull-right">{{post.timestamp}}</p>
         </div>
         {% endfor %}
