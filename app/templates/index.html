@@ -6,13 +6,13 @@
         <!-- here is for CSRF of AJAX -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Post Place -->
-        <form action="" role="form" class="form form-horiziontal noteClass">
+        <form action="" role="form" class="form form-horiziontal noteClass"
+         method="POST" >
           {{ form.hidden_tag() }}
           {{ form.csrf_token }}
           {{wtf.form_field(form.body)}}
           <span class="hidden">{{g.user.id}}</span>
-          <button id="noteButton"type="button"
-            class="btn btn-default pull-right">Post</button>
+          {{wtf.form_field(form.submit_button)}}
         </form>
       </div>
 
@@ -31,13 +31,14 @@
               aria-labelleby="dropdownMenu1">
 
               <li role="presentation">
-                <a href="#" role="menuitem">
-                  Delete
-                </a>
-            </li>
-
+                <form action="{{url_for('index', id=post.id)}}" role="form" method="POST">
+                  <input type="hidden" name="_method" value="DELETE" />
+                  {{dform.hidden_tag()}}
+                  {{dform.csrf_token}}
+                  {{wtf.form_field(dform.submit_button)}}
+                </form>
+              </li>
             </ul>
-
           </div>
 
           <p class="clearfix">{{post.body}}</p>

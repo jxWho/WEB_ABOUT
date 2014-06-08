@@ -5,10 +5,17 @@ from forms import LoginForm, RegisterForm, PostForm
 from flask.ext.login import login_user, logout_user,current_user,login_required
 from app import app, db, lm
 from models import User, ROLE_USER, ROLE_ADMIN, Post
+from view import PostView
 
 @app.before_request
 def before_request():
     flask.g.user = current_user
+    method = flask.request.form.get('_method', '').upper()
+    if method:
+        flask.request.environ['REQUEST_METHOD'] = method
+        ctx = flask._request_ctx_stack.top
+        ctx.url_adapter.default_method = method
+        assert flask.request.method == method
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -20,8 +27,8 @@ def internal_error(error):
     db.session.rollback()
     return flask.render_template('500.html'), 500
 
+'''
 @app.route('/')
-@app.route('/index')
 @login_required
 def index():
     user = flask.g.user
@@ -32,6 +39,7 @@ def index():
             user=user,
             form = form,
             posts = posts)
+'''
 
 @app.route('/logIn', methods=['GET', 'POST'])
 def login():
@@ -126,3 +134,16 @@ def note():
 @lm.user_loader
 def load_user(id):
     return User.query.get( int(id) )
+
+index_view = PostView.PostAPI.as_view('index')
+app.add_url_rule('/',
+        endpoint='/',
+        view_func = index_view )
+
+app.add_url_rule('/index',
+        view_func = index_view,
+        methods=['GET', 'POST'])
+app.add_url_rule('/index/<int:id>',
+        view_func = index_view,
+        methods = ['DELETE']
+        )

@@ -38,4 +38,7 @@ class PostForm(Form):
              validators=[Length(min=1, max=140)]
             )
 
-    #submit_button = SubmitField('Post')
+    submit_button = SubmitField('Post')
+
+class DeletePostForm(Form):
+    submit_button = SubmitField('Delete')
